@@ -1,4 +1,5 @@
-const Card = (article) => {
+import axios from "axios";
+
   // TASK 5
   // ---------------------
   // Implement this function, which should return the markup you see below.
@@ -16,10 +17,42 @@ const Card = (article) => {
   //     <span>By { authorName }</span>
   //   </div>
   // </div>
-  //
+
+  console.log(`this is here at least`)
+  
+  const Card = (article) => {
+
+  const newCard = document.createElement("div");
+  newCard.classList.add("card");
+
+  const newHeadline = document.createElement("div");
+  newHeadline.classList.add("headline");
+  newHeadline.textContent = article.headline;
+
+  const newAuthor = document.createElement("div");
+  newAuthor.classList.add("author");
+
+  const newImgContainer = document.createElement("div");
+  newImgContainer.classList.add("img-container");
+  
+  const newImage = document.createElement("img");
+  newImage.src = article.authorPhoto;
+
+  const authorName = document.createElement("span");
+  authorName.textContent = `By ${article.authorName}`;
+
+  newCard.appendChild(newHeadline);
+  newCard.appendChild(newAuthor);
+  newAuthor.appendChild(newImgContainer);
+  newAuthor.appendChild(authorName);
+
+  newCard.addEventListener("click", event => {
+    console.log(`${newHeadline.textContent}`);
+  })
+
+  return newCard;
 }
 
-const cardAppender = (selector) => {
   // TASK 6
   // ---------------------
   // Implement this function that takes a css selector as its only argument.
@@ -28,6 +61,27 @@ const cardAppender = (selector) => {
   // Create a card from each and every article object in the response, using the Card component.
   // Append each card to the element in the DOM that matches the selector passed to the function.
   //
+
+const cardAppender = (selector) => {
+
+  const entryPoint = document.querySelector(selector);
+
+  // console.log(entryPoint);
+
+  axios.get("https://lambda-times-api.herokuapp.com/articles")
+    .then(res => {
+      console.log('yep')
+      const response = Object.keys(res.data.articles);
+      response.forEach(topic => {
+        res.data.articles[topic].forEach(entry => {
+          document.querySelector(selector).appendChild(Card(entry))
+        })
+      })
+    .catch(err => console.log(`error`))
+    .finally(fin => console.log(`fin cards`))
+})
+
 }
+
 
 export { Card, cardAppender }
