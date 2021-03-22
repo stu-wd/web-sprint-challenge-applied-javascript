@@ -1,6 +1,5 @@
 import axios from "axios";
 
-const Card = (article) => {
   // TASK 5
   // ---------------------
   // Implement this function, which should return the markup you see below.
@@ -19,6 +18,10 @@ const Card = (article) => {
   //   </div>
   // </div>
 
+  console.log(`this is here at least`)
+  
+  const Card = (article) => {
+
   const newCard = document.createElement("div");
   newCard.classList.add("card");
 
@@ -30,7 +33,7 @@ const Card = (article) => {
   newAuthor.classList.add("author");
 
   const newImgContainer = document.createElement("div");
-  newImg.classList.add("img-container");
+  newImgContainer.classList.add("img-container");
   
   const newImage = document.createElement("img");
   newImage.src = article.authorPhoto;
@@ -50,7 +53,6 @@ const Card = (article) => {
   return newCard;
 }
 
-const cardAppender = (selector) => {
   // TASK 6
   // ---------------------
   // Implement this function that takes a css selector as its only argument.
@@ -60,19 +62,26 @@ const cardAppender = (selector) => {
   // Append each card to the element in the DOM that matches the selector passed to the function.
   //
 
-  const entryPoint = document.createElement(selector);
+const cardAppender = (selector) => {
+
+  const entryPoint = document.querySelector(selector);
+
+  // console.log(entryPoint);
 
   axios.get("https://lambda-times-api.herokuapp.com/articles")
     .then(res => {
+      console.log('yep')
       const response = Object.keys(res.data.articles);
       response.forEach(topic => {
-        const articles = res.data.articles[topic];
-        articles.forEach(articleObject => {
-          const newCard = Card(articleObject);
-          entryPoint.appendChild(newCard);
+        res.data.articles[topic].forEach(entry => {
+          document.querySelector(selector).appendChild(Card(entry))
         })
       })
-    })
+    .catch(err => console.log(`error`))
+    .finally(fin => console.log(`fin cards`))
+})
+
 }
+
 
 export { Card, cardAppender }

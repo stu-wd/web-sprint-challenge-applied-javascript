@@ -1,6 +1,5 @@
 import axios from "axios";
 
-const Tabs = (topics) => {
   // TASK 3
   // ---------------------
   // Implement this function which takes an array of strings ("topics") as its only argument.
@@ -15,6 +14,8 @@ const Tabs = (topics) => {
   //   <div class="tab">technology</div>
   // </div>
   //
+
+const Tabs = (topics) => {
 
   const topicsContainer = document.createElement("div");
   topicsContainer.classList.add("topics");
