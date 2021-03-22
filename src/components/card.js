@@ -36,7 +36,7 @@ import axios from "axios";
   newImgContainer.classList.add("img-container");
   
   const newImage = document.createElement("img");
-  newImage.src = article.authorPhoto;
+  newImage.setAttribute("src", article.authorPhoto)
 
   const authorName = document.createElement("span");
   authorName.textContent = `By ${article.authorName}`;
@@ -44,6 +44,7 @@ import axios from "axios";
   newCard.appendChild(newHeadline);
   newCard.appendChild(newAuthor);
   newAuthor.appendChild(newImgContainer);
+  newImgContainer.appendChild(newImage);
   newAuthor.appendChild(authorName);
 
   newCard.addEventListener("click", event => {
