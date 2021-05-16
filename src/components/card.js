@@ -1,4 +1,3 @@
-const Card = (article) => {
   // TASK 5
   // ---------------------
   // Implement this function, which should return the markup you see below.
@@ -16,10 +15,41 @@ const Card = (article) => {
   //     <span>By { authorName }</span>
   //   </div>
   // </div>
+
+import axios from "axios"
+
   //
+const Card = (article) => {
+  const card = document.createElement('div')
+  card.classList.add('card')
+
+  const headline = document.createElement('div')
+  headline.classList.add('headline')
+  headline.textContent = article.headline
+  card.appendChild(headline)
+
+  const author = document.createElement('div')
+  author.classList.add('author')
+  card.appendChild(author)
+
+  const imgContainer = document.createElement('div')
+  imgContainer.classList.add('img-container')
+  author.appendChild(imgContainer)
+
+  const image = document.createElement('img')
+  image.setAttribute('src', article.authorPhoto)
+  imgContainer.appendChild(image)
+
+  const authorName = document.createElement('span')
+  authorName.textContent = `By ${article.authorName}`
+
+  card.addEventListener('click', () => {
+    console.log(article.headline)
+  })
+
+  return card
 }
 
-const cardAppender = (selector) => {
   // TASK 6
   // ---------------------
   // Implement this function that takes a css selector as its only argument.
@@ -28,6 +58,20 @@ const cardAppender = (selector) => {
   // Create a card from each and every article object in the response, using the Card component.
   // Append each card to the element in the DOM that matches the selector passed to the function.
   //
+const cardAppender = (selector) => {
+  const entry = document.querySelector(selector)
+
+  axios.get('https://lambda-times-api.herokuapp.com/articles')
+    .then(response => {
+      const articleTopics = Object.keys(response.data.articles) // this is only grabbing the keys from the object, ie javascript bootstrap etc
+      articleTopics.forEach(topic => { // now looping over the keys that we just defined. the keys are actually arrays that are full of objects that correspond to card above
+        response.data.articles[topic].forEach(actualArticle => { // bc it's an array, response.data.articles[topic] is now going into the array to find an object (actualArticle is an object)
+          entry.appendChild(Card(actualArticle)) // actualArticle is an object that is passed into Card
+        })
+      })
+    })
+    .catch(error => {console.log(error)})
+    .finally(fin => {console.log('card fin')})
 }
 
 export { Card, cardAppender }
