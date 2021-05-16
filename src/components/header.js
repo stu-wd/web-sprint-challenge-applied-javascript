@@ -11,6 +11,8 @@ const Header = (title, date, temp) => {
   //    <span class="temp">{ temp }</span>
   //  </div>
   //
+
+  header stuff goes headerAppender, code grade check
 }
 
 const headerAppender = (selector) => {
